@@ -19,26 +19,14 @@ func init() {
 
 type j2xConvert struct {
 	*json2xml.BaseJSONListener
-	xml   map[antlr.Tree]string
-	stack []antlr.ParseTree
+	xml map[antlr.Tree]string
 }
 
 func NewJ2xConvert() *j2xConvert {
 	return &j2xConvert{
 		&json2xml.BaseJSONListener{},
 		make(map[antlr.Tree]string),
-		make([]antlr.ParseTree, 0),
 	}
-}
-
-func (j *j2xConvert) push(ctx antlr.ParseTree) {
-	j.stack = append(j.stack, ctx)
-}
-
-func (j *j2xConvert) pop() antlr.ParseTree {
-	value := j.stack[len(j.stack)-1]
-	j.stack = j.stack[:len(j.stack)-1]
-	return value
 }
 
 func (j *j2xConvert) setXML(ctx antlr.Tree, s string) {
@@ -78,8 +66,6 @@ func (j *j2xConvert) ExitArrayOfValues(ctx *json2xml.ArrayOfValuesContext) {
 	sb := strings.Builder{}
 	sb.WriteString("\n")
 	for _, p := range ctx.AllValue() {
-		//log.Println(">>>", p.GetText(), j.getXML(p))
-		//s := fmt.Sprintf("<element>%s<elment>", )
 		sb.WriteString("<element>")
 		sb.WriteString(j.getXML(p))
 		sb.WriteString("</element>")
@@ -101,7 +87,6 @@ func (j *j2xConvert) ExitPair(ctx *json2xml.PairContext) {
 
 func (j *j2xConvert) ExitObjectValue(ctx *json2xml.ObjectValueContext) {
 	j.setXML(ctx, j.getXML(ctx.Object()))
-	//log.Println("ExitObjectValue:", ctx.Object())
 }
 
 func (j *j2xConvert) ExitArrayValue(ctx *json2xml.ArrayValueContext) {
