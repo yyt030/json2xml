@@ -1,0 +1,20 @@
+<menu>
+    <id>file</id>
+    <value>File</value>
+    <popup>
+        <menuitem>
+            <element>
+                <value>New</value>
+                <onclick>CreateNewDoc()</onclick>
+            </element>
+            <element>
+                <value>Open</value>
+                <onclick>OpenDoc()</onclick>
+            </element>
+            <element>
+                <value>Close</value>
+                <onclick>CloseDoc()</onclick>
+            </element>
+        </menuitem>
+    </popup>
+</menu>
